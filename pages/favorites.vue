@@ -1,10 +1,9 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row>
       <v-col cols="12">
         <h1 class="text-h4 mb-6 text-center">
-          <v-icon color="error" class="mr-2"> mdi-heart </v-icon>
-          My Favorite Movies
+          Favorite Movies
         </h1>
       </v-col>
     </v-row>
@@ -14,7 +13,8 @@
         <v-btn
           color="error"
           variant="outlined"
-          prepend-icon="mdi-heart-broken"
+          prepend-icon="mdi-delete"
+          data-test="clear-favorites"
           @click="confirmClearFavorites"
         >
           Clear All Favorites
@@ -22,14 +22,16 @@
       </v-col>
     </v-row>
 
-    <v-row v-if="favorites.length > 0">
+    <v-row v-if="favorites.length > 0"
+      class="mb-6"  
+    >
       <v-col
         v-for="favorite in sortedFavorites"
         :key="favorite.imdbID"
         cols="12"
         sm="6"
-        md="4"
-        lg="3"
+        md="6"
+        lg="4"
       >
         <MovieCard
           :movie="favorite"

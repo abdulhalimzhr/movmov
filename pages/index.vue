@@ -65,10 +65,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <v-container>
+  <v-container class="mt-5">
     <div class="search-container">
+      <div class="search-heading text-center text-grey-darken-2 mb-6">
+        Find your next favorite movie
+      </div>
       <v-row>
-        <v-col cols="12" md="6" offset-md="3">
+        <v-col cols="10" md="6" lg="6" offset-md="3" class="mx-auto">
           <v-text-field
             v-model="searchQuery"
             label="Search movies by title"
@@ -108,7 +111,10 @@ onMounted(async () => {
       <v-col
         v-for="movie in movies"
         :key="movie.imdbID"
-        cols="8"
+        cols="12"
+        lg="8"
+        md="8"
+        sm="10"
         class="mx-auto"
       >
         <MovieCard
@@ -166,5 +172,10 @@ onMounted(async () => {
   margin-top: 2rem;
   display: flex;
   justify-content: center;
+}
+
+.search-heading {
+  font-size: 1.25rem;
+  font-weight: 500;
 }
 </style>
