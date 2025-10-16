@@ -47,6 +47,7 @@ The app is deployed at **https://movmov.abdulhalimzhr.com** — feel free to exp
 npm run dev          # Start development server
 npm run build        # Build for production
 npm run test         # Run tests
+npm run test:e2e     # Run Playwright end-to-end tests
 npm run typecheck    # Check TypeScript types
 ```
 
@@ -69,6 +70,8 @@ GitHub Actions workflows are included:
 - `.github/workflows/ci.yml` runs tests and the production build on every push and pull request.
 - `.github/workflows/deploy.yml` builds a Docker image, pushes it to GitHub Container Registry, and (optionally) deploys to an AWS Lightsail instance.
 
+The CI workflow also installs the Playwright browser binaries and runs the end-to-end test suite.
+
 To enable deployment, add the following secrets in your repository settings:
 
 | Secret | Description |
@@ -87,6 +90,15 @@ You can also define repository variables to avoid hard-coding runtime settings:
 | `DEPLOY_PORT` | Host port that Nginx (or another proxy) should target. | `3000` |
 
 Ensure Docker is installed on the Lightsail instance and that it can pull from `ghcr.io`.
+
+### End-to-end tests
+
+Playwright powers the E2E suite located in `tests/e2e`. To run it locally:
+
+```bash
+npx playwright install
+npm run test:e2e   # builds automatically before running preview server
+```
 
 ## How to use
 

@@ -2,9 +2,20 @@ import { vi } from 'vitest';
 import { config } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
 
-// Mock Nuxt auto-imports
+const mockFetch = vi.fn();
+mockFetch.mockResolvedValue({
+  success: true,
+  data: {
+    data: [],
+    total: 0,
+    total_pages: 0,
+    per_page: 10,
+    page: 1
+  }
+});
+
 config.global.mocks = {
-  $fetch: vi.fn(),
+  $fetch: mockFetch,
   useRouter: vi.fn(() => ({
     push: vi.fn()
   })),
@@ -14,8 +25,11 @@ config.global.mocks = {
   useSeoMeta: vi.fn()
 };
 
-// Mock Vue auto-imports
-config.global.plugins = [];
+config.global.provide = {
+  router: {
+    push: vi.fn()
+  }
+};
 
 const simpleStub = (tag: string) =>
   defineComponent({
@@ -75,11 +89,32 @@ config.global.stubs = {
   VRow: simpleStub('div'),
   'v-col': simpleStub('div'),
   VCol: simpleStub('div'),
+  'v-container': simpleStub('div'),
+  VContainer: simpleStub('div'),
+  'v-text-field': simpleStub('input'),
+  VTextField: simpleStub('input'),
+  'v-alert': simpleStub('div'),
+  VAlert: simpleStub('div'),
+  'v-pagination': simpleStub('div'),
+  VPagination: simpleStub('div'),
+  'v-dialog': simpleStub('div'),
+  VDialog: simpleStub('div'),
+  'v-list': simpleStub('ul'),
+  VList: simpleStub('ul'),
+  'v-list-item': simpleStub('li'),
+  VListItem: simpleStub('li'),
+  'v-list-item-title': simpleStub('div'),
+  VListItemTitle: simpleStub('div'),
+  'v-list-item-subtitle': simpleStub('div'),
+  VListItemSubtitle: simpleStub('div'),
+  'v-divider': simpleStub('hr'),
+  VDivider: simpleStub('hr'),
+  'v-spacer': simpleStub('div'),
+  VSpacer: simpleStub('div'),
   'v-tooltip': tooltipStub,
   VTooltip: tooltipStub
 };
 
-// Mock localStorage
 const localStorageMock = {
   getItem: vi.fn(),
   setItem: vi.fn(),
@@ -96,7 +131,6 @@ Object.defineProperty(window, 'localStorage', {
   value: localStorageMock
 });
 
-// Mock import.meta.client
 Object.defineProperty(globalThis, 'import', {
   value: {
     meta: {

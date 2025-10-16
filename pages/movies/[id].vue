@@ -116,6 +116,7 @@ const toggleFavorite = () => {
                   size="large"
                   block
                   class="mb-3"
+                  data-testid="favorite-button"
                   @click="toggleFavorite"
                 >
                   <v-icon left>
@@ -146,7 +147,6 @@ const toggleFavorite = () => {
               </v-col>
             </v-row>
 
-            <!-- Additional movie info (if we had more data from API) -->
             <v-divider class="my-6" />
 
             <v-row>

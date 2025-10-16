@@ -34,7 +34,6 @@ describe('MovieCard', () => {
       stubActions: false
     });
 
-    // Initialise stores with the testing pinia before mounting
     const favoritesStore = useFavoritesStore();
     const moviesStore = useMoviesStore();
 

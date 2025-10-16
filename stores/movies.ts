@@ -89,7 +89,6 @@ export const useMoviesStore = defineStore('movies', () => {
       return;
     }
 
-    // Clear cache for last params to force refetch
     const cacheKey = buildCacheKey(lastParams.value);
     delete listCache.value[cacheKey];
     await fetchMovies(lastParams.value);
@@ -109,7 +108,6 @@ export const useMoviesStore = defineStore('movies', () => {
   };
 
   return {
-    // state
     movies,
     loading,
     error,
@@ -118,8 +116,6 @@ export const useMoviesStore = defineStore('movies', () => {
     totalMovies,
     currentMovie,
     lastParams,
-
-    // actions
     fetchMovies,
     refreshLastQuery,
     setCurrentMovie,
