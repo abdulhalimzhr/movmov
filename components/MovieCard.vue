@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+  import { nextTick } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { useFavoritesStore } from '~/stores/favorites';
+  import { useMoviesStore } from '~/stores/movies';
   import type { Movie } from '~/types';
 
   interface Props {
@@ -96,6 +100,7 @@
               variant="text"
               size="small"
               class="favorite-btn"
+              data-test="favorite-toggle"
               :icon="
                 favoritesStore.isFavorited(movie)
                   ? 'mdi-heart'
