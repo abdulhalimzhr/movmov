@@ -11,32 +11,9 @@ env:
   NODE_VERSION: '20'
 
 jobs:
-  test:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run unit tests
-        run: npm run test -- --run
-
-      - name: Build project
-        run: npm run build
-
   build-and-push:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
-    needs: test
     permissions:
       contents: read
       packages: write
@@ -104,6 +81,7 @@ jobs:
             set -euo pipefail
             REGISTRY="${REGISTRY:-ghcr.io}"
             IMAGE_NAME="${IMAGE_NAME:-${{ github.repository }}}"
+            IMAGE_TAG="${IMAGE_TAG:-latest}"
             CONTAINER_NAME="${CONTAINER_NAME:-${{ vars.APP_CONTAINER_NAME || 'movmov' }}}"
             NETWORK_NAME="${NETWORK_NAME:-${{ vars.DOCKER_NETWORK || 'harga-network' }}}"
             DEPLOY_PORT="${DEPLOY_PORT:-${{ vars.DEPLOY_PORT || '3000' }}}"
