@@ -1,0 +1,12 @@
+node_modules
+.output
+.nuxt
+docker-compose.yml
+Dockerfile
+.git
+.gitignore
+*.log
+dist
+coverage
+tests/results
+**/.DS_Store

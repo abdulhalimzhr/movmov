@@ -1,0 +1,105 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  NODE_VERSION: '20'
+  CONTAINER_NAME: ${{ vars.APP_CONTAINER_NAME || 'movmov' }}
+  NETWORK_NAME: ${{ vars.DOCKER_NETWORK || 'harga-network' }}
+  DEPLOY_PORT: ${{ vars.DEPLOY_PORT || '3000' }}
+
+jobs:
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    env:
+      CONTAINER_NAME: ${{ env.CONTAINER_NAME }}
+      NETWORK_NAME: ${{ env.NETWORK_NAME }}
+      DEPLOY_PORT: ${{ env.DEPLOY_PORT }}
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_PAT }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+            type=sha
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    name: Deploy to Lightsail
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/master' }}
+    env:
+      CONTAINER_NAME: ${{ env.CONTAINER_NAME }}
+      NETWORK_NAME: ${{ env.NETWORK_NAME }}
+      DEPLOY_PORT: ${{ env.DEPLOY_PORT }}
+
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.LIGHTSAIL_HOST }}
+          username: ${{ secrets.LIGHTSAIL_USER }}
+          key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+          envs: |
+            REGISTRY=${{ env.REGISTRY }}
+            IMAGE_NAME=${{ env.IMAGE_NAME }}
+            IMAGE_TAG=${{ github.sha }}
+            CONTAINER_NAME=${{ env.CONTAINER_NAME }}
+            NETWORK_NAME=${{ env.NETWORK_NAME }}
+            DEPLOY_PORT=${{ env.DEPLOY_PORT }}
+          script: |
+            set -euo pipefail
+            docker login "$REGISTRY" -u "${{ secrets.GHCR_USERNAME }}" -p "${{ secrets.GHCR_PAT }}"
+            IMAGE="$REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+            docker pull "$IMAGE"
+            docker stop "$CONTAINER_NAME" || true
+            docker rm "$CONTAINER_NAME" || true
+            docker network create "$NETWORK_NAME" || true
+            docker run -d \
+              --name "$CONTAINER_NAME" \
+              --restart unless-stopped \
+              --network "$NETWORK_NAME" \
+              -p "${DEPLOY_PORT}:3000" \
+              "$IMAGE"
