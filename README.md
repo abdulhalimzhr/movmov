@@ -37,6 +37,10 @@ npm run dev
 
 Open http://localhost:3000 and start browsing!
 
+## Live Demo
+
+The app is deployed at **https://movmov.abdulhalimzhr.com** — feel free to explore the production build.
+
 ### Project commands
 
 ```bash
