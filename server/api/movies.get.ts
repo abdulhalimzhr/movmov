@@ -1,9 +1,8 @@
 import type { MovieApiResponse, SearchParams } from '~/types';
 
-const API_BASE_URL =
-  'https://jsonmock.hackerrank.com/api/movies/search';
+const API_BASE_URL = 'https://jsonmock.hackerrank.com/api/movies/search';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const query = getQuery(event) as SearchParams;
   const { title = '', page = 1 } = query;
 
@@ -22,7 +21,7 @@ export default defineEventHandler(async (event) => {
       success: true,
       data: {
         ...response,
-        data: response.data.map((movie) => ({
+        data: response.data.map(movie => ({
           id: movie.id,
           title: movie.Title,
           year: movie.Year,

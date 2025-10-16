@@ -1,18 +1,10 @@
 <template>
   <v-app>
-    <v-app-bar
-      title="Movmov"
-      color="primary"
-      dark
-    >
+    <v-app-bar title="Movmov" color="primary" dark>
       <template #append>
         <v-tooltip text="View Favorites">
           <template v-slot:activator="{ props }">
-            <v-btn
-              icon="mdi-heart"
-              v-bind="props"
-              :to="{ path: '/favorites' }"
-            >
+            <v-btn icon="mdi-heart" v-bind="props" :to="{ path: '/favorites' }">
               <v-icon>mdi-heart</v-icon>
               <v-badge
                 v-if="favoritesStore.favoriteCount > 0"
@@ -32,14 +24,14 @@
 </template>
 
 <script lang="ts" setup>
-  useSeoMeta({
-    title: 'Movmov',
-    description: 'Simple movie web search'
-  });
+useSeoMeta({
+  title: 'Movmov',
+  description: 'Simple movie web search'
+});
 
-  const favoritesStore = useFavoritesStore();
+const favoritesStore = useFavoritesStore();
 
-  onMounted(() => {
-    favoritesStore.loadFavorites();
-  });
+onMounted(() => {
+  favoritesStore.loadFavorites();
+});
 </script>

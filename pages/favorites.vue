@@ -3,22 +3,14 @@
     <v-row>
       <v-col cols="12">
         <h1 class="text-h4 mb-6 text-center">
-          <v-icon
-            color="error"
-            class="mr-2"
-          >
-            mdi-heart
-          </v-icon>
+          <v-icon color="error" class="mr-2"> mdi-heart </v-icon>
           My Favorite Movies
         </h1>
       </v-col>
     </v-row>
 
     <v-row v-if="favorites.length > 0">
-      <v-col
-        cols="12"
-        class="d-flex justify-end mb-4"
-      >
+      <v-col cols="12" class="d-flex justify-end mb-4">
         <v-btn
           color="error"
           variant="outlined"
@@ -48,19 +40,9 @@
     </v-row>
 
     <v-row v-else>
-      <v-col
-        cols="12"
-        class="text-center py-12"
-      >
-        <v-icon
-          size="64"
-          color="grey-lighten-1"
-        >
-          mdi-heart-outline
-        </v-icon>
-        <h3 class="text-h6 mt-4 text-grey-darken-1">
-          No favorite movies yet
-        </h3>
+      <v-col cols="12" class="text-center py-12">
+        <v-icon size="64" color="grey-lighten-1"> mdi-heart-outline </v-icon>
+        <h3 class="text-h6 mt-4 text-grey-darken-1">No favorite movies yet</h3>
         <p class="text-body-2 text-grey-darken-1 mt-2">
           Start adding movies to your favorites to see them here!
         </p>
@@ -76,45 +58,27 @@
     </v-row>
 
     <v-row v-if="favorites.length > 0">
-      <v-col
-        cols="12"
-        class="text-center text-grey-darken-1"
-      >
+      <v-col cols="12" class="text-center text-grey-darken-1">
         <small>
-          {{ favoriteCount }} favorite movie{{
-            favoriteCount !== 1 ? 's' : ''
-          }}
+          {{ favoriteCount }} favorite movie{{ favoriteCount !== 1 ? 's' : '' }}
         </small>
       </v-col>
     </v-row>
 
     <!-- Confirmation Dialog -->
-    <v-dialog
-      v-model="showClearDialog"
-      max-width="400"
-    >
+    <v-dialog v-model="showClearDialog" max-width="400">
       <v-card>
-        <v-card-title class="text-h6">
-          Clear All Favorites?
-        </v-card-title>
+        <v-card-title class="text-h6"> Clear All Favorites? </v-card-title>
         <v-card-text>
           Are you sure you want to remove all
-          {{ favoriteCount }} favorite movies? This action cannot be
-          undone.
+          {{ favoriteCount }} favorite movies? This action cannot be undone.
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            variant="text"
-            @click="showClearDialog = false"
-          >
+          <v-btn variant="text" @click="showClearDialog = false">
             Cancel
           </v-btn>
-          <v-btn
-            color="error"
-            variant="text"
-            @click="handleClearFavorites"
-          >
+          <v-btn color="error" variant="text" @click="handleClearFavorites">
             Clear All
           </v-btn>
         </v-card-actions>
@@ -124,50 +88,50 @@
 </template>
 
 <script lang="ts" setup>
-  import type { FavoriteMovie } from '~/types';
+import type { FavoriteMovie } from '~/types';
 
-  // SEO meta
-  useSeoMeta({
-    title: 'My Favorite Movies',
-    description: 'View and manage your favorite movies'
-  });
+// SEO meta
+useSeoMeta({
+  title: 'My Favorite Movies',
+  description: 'View and manage your favorite movies'
+});
 
-  // Store
-  const favoritesStore = useFavoritesStore();
+// Store
+const favoritesStore = useFavoritesStore();
 
-  const favorites = computed(() => favoritesStore.favorites);
+const favorites = computed(() => favoritesStore.favorites);
 
-  // Dialog state
-  const showClearDialog = ref(false);
+// Dialog state
+const showClearDialog = ref(false);
 
-  // Computed properties from store
-  const favoriteCount = computed(() => favoritesStore.favoriteCount);
-  const sortedFavorites = computed<FavoriteMovie[]>(
-    () => favoritesStore.sortedFavorites
-  );
+// Computed properties from store
+const favoriteCount = computed(() => favoritesStore.favoriteCount);
+const sortedFavorites = computed<FavoriteMovie[]>(
+  () => favoritesStore.sortedFavorites
+);
 
-  // Methods
-  const confirmClearFavorites = () => {
-    showClearDialog.value = true;
-  };
+// Methods
+const confirmClearFavorites = () => {
+  showClearDialog.value = true;
+};
 
-  const handleClearFavorites = () => {
-    favoritesStore.clearFavorites();
-    showClearDialog.value = false;
-  };
+const handleClearFavorites = () => {
+  favoritesStore.clearFavorites();
+  showClearDialog.value = false;
+};
 
-  const toggleFavorite = (movie: FavoriteMovie) => {
-    favoritesStore.toggleFavorite(movie);
-  };
+const toggleFavorite = (movie: FavoriteMovie) => {
+  favoritesStore.toggleFavorite(movie);
+};
 </script>
 
 <style scoped>
-  .movie-card {
-    transition: all 0.3s ease;
-  }
+.movie-card {
+  transition: all 0.3s ease;
+}
 
-  .movie-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
+.movie-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
 </style>
