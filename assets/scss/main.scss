@@ -1,0 +1,37 @@
+// Main SCSS file
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.v-application {
+  min-height: 100vh;
+}
+
+.movie-card {
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.favorite-btn {
+  transition: all 0.3s ease;
+
+  &.favorited {
+    color: #ff4081;
+  }
+}
+
+.search-container {
+  margin-bottom: 2rem;
+}
+
+.pagination-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
