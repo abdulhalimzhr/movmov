@@ -9,18 +9,11 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   NODE_VERSION: '20'
-  CONTAINER_NAME: ${{ vars.APP_CONTAINER_NAME || 'movmov' }}
-  NETWORK_NAME: ${{ vars.DOCKER_NETWORK || 'harga-network' }}
-  DEPLOY_PORT: ${{ vars.DEPLOY_PORT || '3000' }}
 
 jobs:
   build-and-push:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
-    env:
-      CONTAINER_NAME: ${{ env.CONTAINER_NAME }}
-      NETWORK_NAME: ${{ env.NETWORK_NAME }}
-      DEPLOY_PORT: ${{ env.DEPLOY_PORT }}
     permissions:
       contents: read
       packages: write
@@ -71,9 +64,9 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/master' }}
     env:
-      CONTAINER_NAME: ${{ env.CONTAINER_NAME }}
-      NETWORK_NAME: ${{ env.NETWORK_NAME }}
-      DEPLOY_PORT: ${{ env.DEPLOY_PORT }}
+      CONTAINER_NAME: ${{ vars.APP_CONTAINER_NAME }}
+      NETWORK_NAME: ${{ vars.DOCKER_NETWORK }}
+      DEPLOY_PORT: ${{ vars.DEPLOY_PORT }}
 
     steps:
       - name: Deploy over SSH
