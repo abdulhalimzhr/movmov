@@ -46,6 +46,44 @@ npm run test         # Run tests
 npm run typecheck    # Check TypeScript types
 ```
 
+## Docker usage
+
+```bash
+# Build the production image
+docker build -t movmov .
+
+# Run the container locally
+docker run --rm -p 3000:3000 movmov
+```
+
+The container exposes port `3000` and runs the Nuxt server via `node .output/server/index.mjs`.
+
+## Continuous integration & deployment
+
+GitHub Actions workflows are included:
+
+- `.github/workflows/ci.yml` runs tests and the production build on every push and pull request.
+- `.github/workflows/deploy.yml` builds a Docker image, pushes it to GitHub Container Registry, and (optionally) deploys to an AWS Lightsail instance.
+
+To enable deployment, add the following secrets in your repository settings:
+
+| Secret | Description |
+| ------ | ----------- |
+| `GHCR_USERNAME` | GitHub username (with `write:packages` access). |
+| `GHCR_PAT` | Personal access token with `write:packages` scope for GHCR. |
+| `LIGHTSAIL_HOST` | Public hostname or IP of the Lightsail server. |
+| `LIGHTSAIL_USER` | SSH user (e.g. `ubuntu`). |
+| `LIGHTSAIL_SSH_KEY` | Private SSH key for the Lightsail server. |
+You can also define repository variables to avoid hard-coding runtime settings:
+
+| Variable | Description | Default |
+| -------- | ----------- | ------- |
+| `APP_CONTAINER_NAME` | Name of the running container on Lightsail. | `movmov` |
+| `DOCKER_NETWORK` | Docker network Lightsail uses to link containers. | `harga-network` |
+| `DEPLOY_PORT` | Host port that Nginx (or another proxy) should target. | `3000` |
+
+Ensure Docker is installed on the Lightsail instance and that it can pull from `ghcr.io`.
+
 ## How to use
 
 1. **Search** - Type in the search bar to find movies by title
