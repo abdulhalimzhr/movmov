@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { readonly, ref } from 'vue';
+import { ref } from 'vue';
 import type { Movie, MoviesResponse, SearchParams } from '~/types';
 
 type NormalizedSearchParams = {
@@ -68,7 +68,7 @@ export const useMoviesStore = defineStore('movies', () => {
       currentPage.value = payload.page;
       listCache.value[cacheKey] = payload;
 
-      payload.data.forEach((movie) => {
+      payload.data.forEach(movie => {
         movieCache.value[movie.imdbID] = movie;
       });
 
@@ -110,14 +110,14 @@ export const useMoviesStore = defineStore('movies', () => {
 
   return {
     // state
-    movies: readonly(movies),
-    loading: readonly(loading),
-    error: readonly(error),
-    totalPages: readonly(totalPages),
-    currentPage: readonly(currentPage),
-    totalMovies: readonly(totalMovies),
-    currentMovie: readonly(currentMovie),
-    lastParams: readonly(lastParams),
+    movies,
+    loading,
+    error,
+    totalPages,
+    currentPage,
+    totalMovies,
+    currentMovie,
+    lastParams,
 
     // actions
     fetchMovies,

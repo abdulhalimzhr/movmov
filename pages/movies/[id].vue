@@ -1,38 +1,30 @@
 <script lang="ts" setup>
-  import type { Movie } from '~/types';
+import type { Movie } from '~/types';
 
-  const favoritesStore = useFavoritesStore();
-  const movieStore = useMoviesStore();
+const favoritesStore = useFavoritesStore();
+const movieStore = useMoviesStore();
 
-  const movie = computed<Movie | null>(() => {
-    return movieStore.currentMovie || null;
-  });
+const movie = computed<Movie | null>(() => {
+  return movieStore.currentMovie || null;
+});
 
-  useSeoMeta({
-    title: movie.value?.title || 'Movie Details',
-    description: `View details for ${movie.value?.title || 'movie'}`
-  });
+useSeoMeta({
+  title: movie.value?.title || 'Movie Details',
+  description: `View details for ${movie.value?.title || 'movie'}`
+});
 
-  const toggleFavorite = () => {
-    if (movie.value) {
-      favoritesStore.toggleFavorite(movie.value);
-    }
-  };
+const toggleFavorite = () => {
+  if (movie.value) {
+    favoritesStore.toggleFavorite(movie.value);
+  }
+};
 </script>
 
 <template>
   <v-container fluid>
     <v-row v-if="!movie">
-      <v-col
-        cols="12"
-        class="text-center py-12"
-      >
-        <v-icon
-          size="64"
-          color="warning"
-        >
-          mdi-movie-off
-        </v-icon>
+      <v-col cols="12" class="text-center py-12">
+        <v-icon size="64" color="warning"> mdi-movie-off </v-icon>
         <h3 class="text-h6 mt-4">Movie not found</h3>
         <p class="text-body-2 text-grey-darken-1 mt-2">
           The movie you're looking for doesn't exist.
@@ -49,11 +41,7 @@
     </v-row>
 
     <v-row v-else>
-      <v-col
-        cols="12"
-        md="8"
-        offset-md="2"
-      >
+      <v-col cols="12" md="8" offset-md="2">
         <v-card>
           <v-card-item>
             <v-btn
@@ -70,11 +58,7 @@
             </v-card-title>
 
             <v-card-subtitle class="text-h6 mb-4">
-              <v-chip
-                size="large"
-                color="primary"
-                variant="outlined"
-              >
+              <v-chip size="large" color="primary" variant="outlined">
                 <v-icon left>mdi-calendar</v-icon>
                 {{ movie.year }}
               </v-chip>
@@ -85,10 +69,7 @@
 
           <v-card-text>
             <v-row>
-              <v-col
-                cols="12"
-                md="8"
-              >
+              <v-col cols="12" md="8">
                 <div class="text-h6 mb-3">Movie Information</div>
 
                 <v-list>
@@ -124,17 +105,12 @@
                 </v-list>
               </v-col>
 
-              <v-col
-                cols="12"
-                md="4"
-              >
+              <v-col cols="12" md="4">
                 <div class="text-h6 mb-3">Actions</div>
 
                 <v-btn
                   :color="
-                    favoritesStore.isFavorited(movie)
-                      ? 'error'
-                      : 'primary'
+                    favoritesStore.isFavorited(movie) ? 'error' : 'primary'
                   "
                   variant="elevated"
                   size="large"
@@ -177,19 +153,9 @@
               <v-col cols="12">
                 <div class="text-h6 mb-3">Quick Stats</div>
                 <v-row>
-                  <v-col
-                    cols="12"
-                    sm="4"
-                  >
-                    <v-card
-                      variant="outlined"
-                      class="text-center pa-4"
-                    >
-                      <v-icon
-                        color="primary"
-                        size="32"
-                        class="mb-2"
-                      >
+                  <v-col cols="12" sm="4">
+                    <v-card variant="outlined" class="text-center pa-4">
+                      <v-icon color="primary" size="32" class="mb-2">
                         mdi-calendar-range
                       </v-icon>
                       <div class="text-h6">{{ movie.year }}</div>
@@ -199,14 +165,8 @@
                     </v-card>
                   </v-col>
 
-                  <v-col
-                    cols="12"
-                    sm="4"
-                  >
-                    <v-card
-                      variant="outlined"
-                      class="text-center pa-4"
-                    >
+                  <v-col cols="12" sm="4">
+                    <v-card variant="outlined" class="text-center pa-4">
                       <v-icon
                         :color="
                           favoritesStore.isFavorited(movie)
@@ -235,19 +195,9 @@
                     </v-card>
                   </v-col>
 
-                  <v-col
-                    cols="12"
-                    sm="4"
-                  >
-                    <v-card
-                      variant="outlined"
-                      class="text-center pa-4"
-                    >
-                      <v-icon
-                        color="primary"
-                        size="32"
-                        class="mb-2"
-                      >
+                  <v-col cols="12" sm="4">
+                    <v-card variant="outlined" class="text-center pa-4">
+                      <v-icon color="primary" size="32" class="mb-2">
                         mdi-link-variant
                       </v-icon>
                       <div class="text-h6">Available</div>
@@ -267,11 +217,11 @@
 </template>
 
 <style scoped>
-  .v-card {
-    transition: all 0.3s ease;
-  }
+.v-card {
+  transition: all 0.3s ease;
+}
 
-  .v-card:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  }
+.v-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
 </style>
