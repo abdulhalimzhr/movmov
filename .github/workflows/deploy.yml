@@ -87,11 +87,11 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/master' }}
     env:
-      REGISTRY: ghcr.io
-      IMAGE_NAME: ${{ github.repository }}
-      CONTAINER_NAME: ${{ vars.APP_CONTAINER_NAME }}
-      NETWORK_NAME: ${{ vars.DOCKER_NETWORK }}
-      DEPLOY_PORT: ${{ vars.DEPLOY_PORT }}
+      REGISTRY: ${{ env.REGISTRY }}
+      IMAGE_NAME: ${{ env.IMAGE_NAME }}
+      CONTAINER_NAME: ${{ vars.APP_CONTAINER_NAME || 'movmov' }}
+      NETWORK_NAME: ${{ vars.DOCKER_NETWORK || 'harga-network' }}
+      DEPLOY_PORT: ${{ vars.DEPLOY_PORT || '3000' }}
 
     steps:
       - name: Deploy over SSH
