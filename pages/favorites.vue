@@ -10,7 +10,7 @@
     </v-row>
 
     <v-row v-if="favorites.length > 0">
-      <v-col cols="12" class="d-flex justify-end mb-4">
+      <v-col cols="8" class="d-flex justify-end mb-4">
         <v-btn
           color="error"
           variant="outlined"
