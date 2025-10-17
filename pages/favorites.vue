@@ -2,9 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <h1 class="text-h4 mb-6 text-center">
-          Favorite Movies
-        </h1>
+        <h1 class="text-h4 mb-6 text-center">Favorite Movies</h1>
       </v-col>
     </v-row>
 
@@ -22,9 +20,7 @@
       </v-col>
     </v-row>
 
-    <v-row v-if="favorites.length > 0"
-      class="mb-6"  
-    >
+    <v-row v-if="favorites.length > 0" class="mb-6">
       <v-col
         v-for="favorite in sortedFavorites"
         :key="favorite.imdbID"
@@ -67,7 +63,6 @@
       </v-col>
     </v-row>
 
-    <!-- Confirmation Dialog -->
     <v-dialog v-model="showClearDialog" max-width="400">
       <v-card>
         <v-card-title class="text-h6"> Clear All Favorites? </v-card-title>
@@ -92,27 +87,22 @@
 <script lang="ts" setup>
 import type { FavoriteMovie } from '~/types';
 
-// SEO meta
 useSeoMeta({
   title: 'My Favorite Movies',
   description: 'View and manage your favorite movies'
 });
 
-// Store
 const favoritesStore = useFavoritesStore();
 
 const favorites = computed(() => favoritesStore.favorites);
 
-// Dialog state
 const showClearDialog = ref(false);
 
-// Computed properties from store
 const favoriteCount = computed(() => favoritesStore.favoriteCount);
 const sortedFavorites = computed<FavoriteMovie[]>(
   () => favoritesStore.sortedFavorites
 );
 
-// Methods
 const confirmClearFavorites = () => {
   showClearDialog.value = true;
 };

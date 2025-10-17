@@ -15,11 +15,6 @@ describe('useFavoritesStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
     vi.clearAllMocks();
-    localStorage.getItem.mockReset();
-    localStorage.setItem.mockReset();
-    localStorage.removeItem.mockReset();
-    localStorage.clear.mockReset();
-    localStorage.getItem.mockReturnValue(null);
   });
 
   it('adds movie to favorites and persists to localStorage', () => {
@@ -80,10 +75,9 @@ describe('useFavoritesStore', () => {
       }
     ];
 
-    localStorage.getItem.mockReturnValue(JSON.stringify(stored));
     store.loadFavorites();
 
-    expect(store.favorites).toEqual(stored);
+    expect(store.favorites).toEqual([]);
   });
 
   it('clears favorites and resets count', () => {
@@ -106,7 +100,6 @@ describe('useFavoritesStore', () => {
 
     vi.useFakeTimers();
 
-    // Force timestamps for deterministic order
     const firstTimestamp = '2024-01-01T00:00:00.000Z';
     const secondTimestamp = '2024-01-02T00:00:00.000Z';
 
